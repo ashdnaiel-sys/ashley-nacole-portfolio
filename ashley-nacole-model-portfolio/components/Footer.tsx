@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { modelData } from '@/data/modelData';
+import { siteOverrides } from '@/data/siteOverrides';
 
 export function Footer() {
   return (
@@ -7,7 +8,7 @@ export function Footer() {
       <p>{modelData.name} © 2026</p>
       <div>
         <a href={modelData.instagramUrl} target="_blank" rel="noreferrer">Instagram</a>
-        {modelData.email.includes('@') ? <a href={`mailto:${modelData.email}`}>Email</a> : <span>Email</span>}
+        <a href={`mailto:${siteOverrides.contactEmail}`}>Email</a>
         <Link href="/portfolio">Portfolio</Link>
         <Link href="/digitals">Digitals</Link>
       </div>
