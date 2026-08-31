@@ -25,27 +25,49 @@ export default function DigitalsPage() {
       <section className="section-shell digitals-gallery-section" aria-label="Current unretouched digitals">
         <DigitalsGallery images={digitalImages} />
       </section>
-      <section className="section-shell" aria-labelledby="comp-card-title" style={{ paddingTop: '3rem', paddingBottom: '5rem' }}>
-        <p className="eyebrow">Model Materials</p>
-        <h2 id="comp-card-title">Comp Card</h2>
-        <p style={{ maxWidth: '36rem', marginBottom: '1.25rem' }}>
-          Current comp card for agency, casting, and booking reference.
-        </p>
-        <a
-          className="text-link"
-          href="/images/comp-card/ashley-nacole-comp-card.svg"
-          target="_blank"
-          rel="noreferrer"
+      <section
+        className="section-shell"
+        aria-labelledby="comp-card-title"
+        style={{ paddingTop: '3rem', paddingBottom: '5rem' }}
+      >
+        <div
+          style={{
+            borderTop: '1px solid var(--line)',
+            paddingTop: '2rem',
+            display: 'flex',
+            alignItems: 'flex-end',
+            justifyContent: 'space-between',
+            gap: '2rem',
+            flexWrap: 'wrap',
+          }}
         >
-          Open Comp Card ↗
-        </a>
-        <div style={{ display: 'block', width: 'min(100%, 680px)', marginTop: '2rem' }}>
-          <iframe
-            src="/images/comp-card/ashley-nacole-comp-card.svg"
-            title="Ashley Nacole model comp card"
-            loading="lazy"
-            style={{ display: 'block', width: '100%', aspectRatio: '300 / 389', border: 0, background: '#fff' }}
-          />
+          <div>
+            <p className="eyebrow">Model Materials</p>
+            <h2
+              id="comp-card-title"
+              style={{
+                fontFamily: "Georgia, 'Times New Roman', serif",
+                fontSize: 'clamp(2rem, 4vw, 3.5rem)',
+                fontWeight: 400,
+                letterSpacing: '-.035em',
+                lineHeight: 0.95,
+                margin: '0 0 .85rem',
+              }}
+            >
+              Comp Card
+            </h2>
+            <p style={{ maxWidth: '34rem', margin: 0 }}>
+              Current comp card for agency, casting, and booking reference.
+            </p>
+          </div>
+          <a
+            className="button-text"
+            href="/images/comp-card/ashley-nacole-comp-card.svg"
+            download="Ashley-Nacole-Comp-Card.svg"
+            aria-label="Download Ashley Nacole comp card"
+          >
+            Download Comp Card ↓
+          </a>
         </div>
       </section>
     </div>
