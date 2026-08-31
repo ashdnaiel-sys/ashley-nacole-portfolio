@@ -8,13 +8,11 @@
   <style>
     .preview-note{padding:10px 18px;background:#111;color:#f7f6f2;font-size:10px;letter-spacing:.12em;text-transform:uppercase;text-align:center}
 
-    .comp-card-block{margin-top:54px;padding-top:42px;border-top:1px solid rgba(17,17,17,.22);display:grid;grid-template-columns:minmax(260px,.62fr) minmax(320px,1.38fr);gap:48px;align-items:start}
-    .comp-card-copy h3{font-family:Georgia,'Times New Roman',serif;font-size:clamp(42px,5vw,76px);font-weight:400;line-height:.95;margin:10px 0 20px}
-    .comp-card-copy p:not(.eyebrow){max-width:28rem;line-height:1.55;margin:0 0 24px}
-    .comp-card-image-link{display:block;justify-self:end;width:min(100%,680px)}
-    .comp-card-image{display:block;width:100%;aspect-ratio:300/389;background:#fff;border:1px solid rgba(17,17,17,.12)}
-    .comp-card-open{display:inline-block;margin-top:18px;text-decoration:none;border-bottom:1px solid currentColor;padding-bottom:3px}
-    @media (max-width:800px){.comp-card-block{grid-template-columns:1fr;gap:28px;margin-top:38px;padding-top:32px}.comp-card-image-link{justify-self:stretch;width:100%}}
+    .comp-card-block{margin-top:54px;padding-top:32px;border-top:1px solid rgba(17,17,17,.22);display:flex;align-items:flex-end;justify-content:space-between;gap:32px;flex-wrap:wrap}
+    .comp-card-copy h3{font-family:Georgia,'Times New Roman',serif;font-size:clamp(32px,4vw,52px);font-weight:400;letter-spacing:-.035em;line-height:.95;margin:10px 0 14px}
+    .comp-card-copy p:not(.eyebrow){max-width:34rem;line-height:1.55;margin:0}
+    .comp-card-open{display:inline-block;text-decoration:none;text-transform:uppercase;letter-spacing:.14em;font-size:11px;font-weight:700;border-bottom:1px solid currentColor;padding-bottom:5px;white-space:nowrap}
+    @media (max-width:800px){.comp-card-block{align-items:flex-start;gap:24px;margin-top:38px;padding-top:28px}}
   </style>
 </head>
 <body>
@@ -72,10 +70,9 @@
         <div class="comp-card-copy">
           <p class="eyebrow">Model Materials</p>
           <h3 id="comp-card-title">Comp Card</h3>
-          <p>Your current comp card is included here for quick agency and casting reference.</p>
-          <a class="comp-card-open" href="public/images/comp-card/ashley-nacole-comp-card.svg" target="_blank" rel="noreferrer">Open Comp Card ↗</a>
+          <p>Current comp card for agency, casting, and booking reference.</p>
         </div>
-        <div class="comp-card-image-link"><iframe class="comp-card-image" src="public/images/comp-card/ashley-nacole-comp-card.svg" title="Ashley Nacole model comp card" loading="lazy"></iframe></div>
+        <a class="comp-card-open" href="public/images/comp-card/ashley-nacole-comp-card.svg" download="Ashley-Nacole-Comp-Card.svg" target="_blank" rel="noreferrer">Download Comp Card ↓</a>
       </div>
     </section>
     <section class="range-section section-shell" aria-labelledby="preview-range-title">
@@ -128,7 +125,7 @@
         <div class="gallery-button"><img src="public/images/portfolio/fitness-leopard-standing.jpeg" alt="Ashley Nacole full-length leopard-print activewear portrait" /></div>
       </div>
     </section>
-    <section class="about-section section-shell" id="about"><div><p class="eyebrow">Professional Background</p><h2>About</h2></div><div class="about-copy"><p>Ashley Nacole is a Texas-based model with experience in commercial, runway, beauty, lifestyle, fashion, e-commerce, skin, hair, swim, and fitness modeling.</p><p>Ashley also brings natural movement ability to fitness and wellness work, with experience in yoga, Pilates, boxing, running, and general athletics.</p><p>Her Mother Agency is the Neal Hamil Agency based in Texas, Ashley is available for bookings, agency meetings, travel, and temporary placement in additional U.S. and international markets.</p></div></section>
+    <section class="about-section section-shell" id="about"><div><p class="eyebrow">Professional Background</p><h2>About</h2></div><div class="about-copy"><p>Ashley Nacole is a Texas-based model with experience in commercial, runway, beauty, lifestyle, fashion, e-commerce, skin, hair, swim, and fitness modeling.</p><p>Ashley also brings natural movement ability to fitness and wellness work, with experience in Yoga, Pilates, Boxing, Running, and general athletics.</p><p>Her Mother Agency is the Neal Hamil Agency based in Texas, Ashley is available for bookings, agency meetings, travel, and temporary placement in additional U.S. and international markets.</p></div></section>
     <section class="contact-section" id="contact"><div class="section-shell contact-inner"><div class="contact-copy"><p class="eyebrow">Representation / Bookings / Castings</p><h2>Contact / Bookings</h2><p>For representation, bookings, castings, testing, and placement inquiries.</p><div class="contact-details"><p><strong>Ashley Nacole</strong></p><p>Email: <a href="mailto:ashleynacole011@gmail.com">ashleynacole011@gmail.com</a></p><p>Instagram @ashleynacole011 ↗</p><p>Current Representation:<br>Neal Hamil Agency<br>MA · Nonexclusive</p></div></div><form class="contact-form"><label>Name<input></label><label>Agency / Company<input></label><label>Email<input></label><label>Message<textarea rows="6"></textarea></label><button class="button-outline" type="button">Send Inquiry</button></form></div></section>
   </main>
 </body>
