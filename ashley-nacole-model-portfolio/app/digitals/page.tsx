@@ -39,19 +39,14 @@ export default function DigitalsPage() {
         >
           Open Comp Card ↗
         </a>
-        <a
-          href="/images/comp-card/ashley-nacole-comp-card.svg"
-          target="_blank"
-          rel="noreferrer"
-          aria-label="Open Ashley Nacole comp card"
-          style={{ display: 'block', width: 'min(100%, 680px)', marginTop: '2rem' }}
-        >
-          <img
+        <div style={{ display: 'block', width: 'min(100%, 680px)', marginTop: '2rem' }}>
+          <iframe
             src="/images/comp-card/ashley-nacole-comp-card.svg"
-            alt="Ashley Nacole model comp card with four denim portraits, measurements, Neal Hamil Agency representation, and booking email"
-            style={{ display: 'block', width: '100%', height: 'auto' }}
+            title="Ashley Nacole model comp card"
+            loading="lazy"
+            style={{ display: 'block', width: '100%', aspectRatio: '300 / 389', border: 0, background: '#fff' }}
           />
-        </a>
+        </div>
       </section>
     </div>
   );
