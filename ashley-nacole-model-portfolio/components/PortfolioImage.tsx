@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import type { PortfolioImage as PortfolioImageType } from '@/data/modelData';
+import { resolvePublicAsset } from '@/lib/imageSrc';
 import { ImagePlaceholder } from './ImagePlaceholder';
 
 export function PortfolioImage({ image, className = '', priority = false }: { image: PortfolioImageType; className?: string; priority?: boolean }) {
@@ -7,11 +8,13 @@ export function PortfolioImage({ image, className = '', priority = false }: { im
     return <ImagePlaceholder label={image.alt} orientation={image.orientation} className={className} />;
   }
 
+  const src = resolvePublicAsset(image.src)!;
+
   if (!image.width || !image.height) {
     return (
       <div className={`portfolio-image-frame ${className}`}>
         <Image
-          src={image.src}
+          src={src}
           alt={image.alt}
           fill
           preload={priority}
@@ -25,7 +28,7 @@ export function PortfolioImage({ image, className = '', priority = false }: { im
   return (
     <Image
       className={`portfolio-native-image ${className}`}
-      src={image.src}
+      src={src}
       alt={image.alt}
       width={image.width}
       height={image.height}
