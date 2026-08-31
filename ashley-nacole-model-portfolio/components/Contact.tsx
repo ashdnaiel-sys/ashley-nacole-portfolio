@@ -2,8 +2,9 @@
 
 import { FormEvent, useState } from 'react';
 import { modelData } from '@/data/modelData';
+import { siteOverrides } from '@/data/siteOverrides';
 
-const emailConfigured = modelData.email.includes('@') && !modelData.email.includes('REPLACE_');
+const contactEmail = siteOverrides.contactEmail;
 
 export function Contact() {
   const [message, setMessage] = useState('');
@@ -22,14 +23,9 @@ export function Contact() {
       return;
     }
 
-    if (!emailConfigured) {
-      setMessage('Add your professional email in data/modelData.ts to enable inquiry sending.');
-      return;
-    }
-
     const subject = encodeURIComponent(`Modeling inquiry for Ashley Nacole — ${company || name}`);
     const body = encodeURIComponent(`Name: ${name}\nAgency / Company: ${company}\nEmail: ${email}\n\n${note}`);
-    window.location.href = `mailto:${modelData.email}?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:${contactEmail}?subject=${subject}&body=${body}`;
     setMessage('Opening your email app with this inquiry prepared.');
   }
 
@@ -42,10 +38,7 @@ export function Contact() {
           <p>For representation, bookings, castings, testing, and international placement inquiries.</p>
           <div className="contact-details">
             <p><strong>{modelData.name}</strong></p>
-            <p>
-              Email:{' '}
-              {emailConfigured ? <a href={`mailto:${modelData.email}`}>{modelData.email}</a> : <span>Professional email placeholder</span>}
-            </p>
+            <p>Email: <a href={`mailto:${contactEmail}`}>{contactEmail}</a></p>
             <p><a href={modelData.instagramUrl} target="_blank" rel="noreferrer">Instagram {modelData.instagramHandle} ↗</a></p>
             <p>
               Current Texas Representation:<br />
@@ -77,7 +70,7 @@ export function Contact() {
             <label>Website<input name="website" type="text" tabIndex={-1} autoComplete="off" /></label>
           </div>
           <button className="button-outline" type="submit">Send Inquiry</button>
-          <p className="form-note" aria-live="polite">{message || 'No account required. Uses your email app after you add your professional email.'}</p>
+          <p className="form-note" aria-live="polite">{message || 'No account required. Uses your email app to send the inquiry.'}</p>
         </form>
       </div>
     </section>
