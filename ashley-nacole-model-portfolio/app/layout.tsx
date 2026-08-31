@@ -3,6 +3,9 @@ import './globals.css';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { modelData } from '@/data/modelData';
+import { resolvePublicAsset } from '@/lib/imageSrc';
+
+const socialImage = resolvePublicAsset(modelData.seo.ogImage)!;
 
 export const metadata: Metadata = {
   metadataBase: new URL(modelData.siteUrl),
@@ -14,13 +17,13 @@ export const metadata: Metadata = {
     title: modelData.seo.title,
     description: modelData.seo.description,
     siteName: modelData.name,
-    images: [{ url: modelData.seo.ogImage, alt: `${modelData.name} modeling portfolio` }],
+    images: [{ url: socialImage, alt: `${modelData.name} modeling portfolio` }],
   },
   twitter: {
     card: 'summary_large_image',
     title: modelData.seo.title,
     description: modelData.seo.description,
-    images: [modelData.seo.ogImage],
+    images: [socialImage],
   },
   robots: { index: true, follow: true },
 };
