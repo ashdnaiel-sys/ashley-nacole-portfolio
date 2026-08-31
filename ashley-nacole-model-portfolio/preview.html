@@ -11,15 +11,10 @@
     .comp-card-block{margin-top:54px;padding-top:42px;border-top:1px solid rgba(17,17,17,.22);display:grid;grid-template-columns:minmax(260px,.62fr) minmax(320px,1.38fr);gap:48px;align-items:start}
     .comp-card-copy h3{font-family:Georgia,'Times New Roman',serif;font-size:clamp(42px,5vw,76px);font-weight:400;line-height:.95;margin:10px 0 20px}
     .comp-card-copy p:not(.eyebrow){max-width:28rem;line-height:1.55;margin:0 0 24px}
-    .comp-card-sheet{background:#fff;border:1px solid rgba(17,17,17,.12);padding:22px;max-width:680px;justify-self:end;width:100%;box-sizing:border-box}
-    .comp-card-images{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    .comp-card-images img{display:block;width:100%;aspect-ratio:1/1.18;object-fit:cover;background:#eee}
-    .comp-card-name{font-size:29px;letter-spacing:.03em;margin:13px 0 8px}
-    .comp-card-stats{display:grid;grid-template-columns:1fr 1fr;gap:4px 28px;font-size:17px;letter-spacing:.02em}
-    .comp-card-stats span{display:flex;gap:10px}
-    .comp-card-stats b{font-weight:500;min-width:76px}
-    .comp-card-footer{margin-top:10px;padding-top:8px;border-top:1.5px solid #111;display:flex;justify-content:space-between;gap:18px;font-size:15px;letter-spacing:.04em;text-transform:uppercase}
-    @media (max-width:800px){.comp-card-block{grid-template-columns:1fr;gap:28px;margin-top:38px;padding-top:32px}.comp-card-sheet{justify-self:stretch;max-width:none}.comp-card-footer{font-size:11px}.comp-card-stats{font-size:14px}}
+    .comp-card-image-link{display:block;justify-self:end;width:min(100%,680px)}
+    .comp-card-image{display:block;width:100%;height:auto;background:#fff;border:1px solid rgba(17,17,17,.12)}
+    .comp-card-open{display:inline-block;margin-top:18px;text-decoration:none;border-bottom:1px solid currentColor;padding-bottom:3px}
+    @media (max-width:800px){.comp-card-block{grid-template-columns:1fr;gap:28px;margin-top:38px;padding-top:32px}.comp-card-image-link{justify-self:stretch;width:100%}}
   </style>
 </head>
 <body>
@@ -77,24 +72,12 @@
         <div class="comp-card-copy">
           <p class="eyebrow">Model Materials</p>
           <h3 id="comp-card-title">Comp Card</h3>
-          <p>Your current comp card is now part of the Digitals section for quick agency and casting reference.</p>
+          <p>Your current comp card is included here for quick agency and casting reference.</p>
+          <a class="comp-card-open" href="public/images/comp-card/ashley-nacole-comp-card.svg" target="_blank" rel="noreferrer">Open Comp Card ↗</a>
         </div>
-        <div class="comp-card-sheet" role="img" aria-label="Ashley Nacole model comp card with four denim portfolio images, measurements, representation, and booking email">
-          <div class="comp-card-images">
-            <img src="public/images/portfolio/lifestyle-denim-back-close.jpeg" alt="Ashley Nacole denim portrait" />
-            <img src="public/images/portfolio/lifestyle-denim-jacket-smile.jpeg" alt="Ashley Nacole smiling in denim jacket" />
-            <img src="public/images/portfolio/lifestyle-denim-seated-full.jpeg" alt="Ashley Nacole seated in double denim" />
-            <img src="public/images/portfolio/lifestyle-denim-stool-soft-smile.jpeg" alt="Ashley Nacole seated denim portrait" />
-          </div>
-          <div class="comp-card-name">ASHLEY NACOLE / MODEL</div>
-          <div class="comp-card-stats">
-            <span><b>HEIGHT</b> 5'8</span><span><b>SHOES</b> 9</span>
-            <span><b>BUST</b> 32.5&quot;</span><span><b>HAIR</b> BROWN</span>
-            <span><b>WAIST</b> 25.5&quot;</span><span><b>EYES</b> BROWN</span>
-            <span><b>HIPS</b> 37&quot;</span><span></span>
-          </div>
-          <div class="comp-card-footer"><span>Neal Hamil Agency</span><span>ashleynacole011@gmail.com</span></div>
-        </div>
+        <a class="comp-card-image-link" href="public/images/comp-card/ashley-nacole-comp-card.svg" target="_blank" rel="noreferrer" aria-label="Open Ashley Nacole comp card">
+          <img class="comp-card-image" src="public/images/comp-card/ashley-nacole-comp-card.svg" alt="Ashley Nacole model comp card with four denim portraits, measurements, Neal Hamil Agency representation, and booking email" />
+        </a>
       </div>
     </section>
     <section class="range-section section-shell" aria-labelledby="preview-range-title">
