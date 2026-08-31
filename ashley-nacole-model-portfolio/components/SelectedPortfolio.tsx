@@ -1,12 +1,12 @@
 import Link from 'next/link';
 import { portfolioImages } from '@/data/modelData';
+import { siteOverrides } from '@/data/siteOverrides';
 import { PortfolioImage } from './PortfolioImage';
 
 export function SelectedPortfolio() {
-  const images = portfolioImages
-    .filter((image) => image.visible && image.featured && image.id !== 'hero')
-    .sort((a, b) => a.order - b.order)
-    .slice(0, 8);
+  const images = siteOverrides.selectedPortfolioIds
+    .map((id) => portfolioImages.find((image) => image.id === id))
+    .filter((image): image is NonNullable<typeof image> => Boolean(image?.visible));
 
   return (
     <section className="selected-portfolio section-shell" id="portfolio-preview" aria-labelledby="selected-portfolio-title">
