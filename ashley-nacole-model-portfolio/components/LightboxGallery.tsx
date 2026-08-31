@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { useEffect, useMemo, useState } from 'react';
 import type { PortfolioImage } from '@/data/modelData';
+import { resolvePublicAsset } from '@/lib/imageSrc';
 import { ImagePlaceholder } from './ImagePlaceholder';
 
 export function LightboxGallery({ images }: { images: PortfolioImage[] }) {
@@ -29,19 +30,22 @@ export function LightboxGallery({ images }: { images: PortfolioImage[] }) {
   return (
     <>
       <div className="full-portfolio-grid">
-        {ordered.map((image, index) => (
-          <button className={`gallery-button gallery-${image.orientation}`} type="button" key={image.id} onClick={() => setActiveIndex(index)} aria-label={`Open ${image.alt}`}>
-            {image.src ? (
-              image.width && image.height ? (
-                <Image src={image.src} alt={image.alt} width={image.width} height={image.height} sizes="(max-width: 768px) 100vw, 50vw" />
-              ) : (
-                <span className="gallery-fill-frame">
-                  <Image src={image.src} alt={image.alt} fill sizes="(max-width: 768px) 100vw, 50vw" style={{ objectFit: 'cover', objectPosition: image.focalPoint ?? '50% 50%' }} />
-                </span>
-              )
-            ) : <ImagePlaceholder label={image.alt} orientation={image.orientation} />}
-          </button>
-        ))}
+        {ordered.map((image, index) => {
+          const src = resolvePublicAsset(image.src);
+          return (
+            <button className={`gallery-button gallery-${image.orientation}`} type="button" key={image.id} onClick={() => setActiveIndex(index)} aria-label={`Open ${image.alt}`}>
+              {src ? (
+                image.width && image.height ? (
+                  <Image src={src} alt={image.alt} width={image.width} height={image.height} sizes="(max-width: 768px) 100vw, 50vw" />
+                ) : (
+                  <span className="gallery-fill-frame">
+                    <Image src={src} alt={image.alt} fill sizes="(max-width: 768px) 100vw, 50vw" style={{ objectFit: 'cover', objectPosition: image.focalPoint ?? '50% 50%' }} />
+                  </span>
+                )
+              ) : <ImagePlaceholder label={image.alt} orientation={image.orientation} />}
+            </button>
+          );
+        })}
       </div>
 
       {active ? (
@@ -50,7 +54,7 @@ export function LightboxGallery({ images }: { images: PortfolioImage[] }) {
           <button className="lightbox-prev" type="button" onClick={(event) => { event.stopPropagation(); setActiveIndex((activeIndex! - 1 + ordered.length) % ordered.length); }} aria-label="Previous image">←</button>
           <div className="lightbox-media" onClick={(event) => event.stopPropagation()}>
             {active.src ? (
-              <Image src={active.src} alt={active.alt} fill sizes="100vw" style={{ objectFit: 'contain' }} />
+              <Image src={resolvePublicAsset(active.src)!} alt={active.alt} fill sizes="100vw" style={{ objectFit: 'contain' }} />
             ) : <ImagePlaceholder label={active.alt} orientation={active.orientation} />}
           </div>
           <button className="lightbox-next" type="button" onClick={(event) => { event.stopPropagation(); setActiveIndex((activeIndex! + 1) % ordered.length); }} aria-label="Next image">→</button>
