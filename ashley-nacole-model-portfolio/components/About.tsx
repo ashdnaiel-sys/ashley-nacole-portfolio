@@ -2,7 +2,7 @@ import { modelData } from '@/data/modelData';
 
 const biography = [
   'Ashley Nacole is a Texas-based model with experience in commercial, runway, beauty, lifestyle, fashion, e-commerce, skin, hair, swim, and fitness modeling.',
-  'Ashley also brings natural movement ability to fitness and wellness work, with experience in yoga, Pilates, boxing, running, and general athletics.',
+  'Ashley also brings natural movement ability to fitness and wellness work, with experience in Yoga, Pilates, Boxing, Running, and general athletics.',
   'Her Mother Agency is the Neal Hamil Agency based in Texas, Ashley is available for bookings, agency meetings, travel, and temporary placement in additional U.S. and international markets.',
 ] as const;
 
