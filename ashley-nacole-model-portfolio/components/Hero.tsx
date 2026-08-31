@@ -1,16 +1,18 @@
 import Image from 'next/image';
 import { modelData, portfolioImages } from '@/data/modelData';
+import { resolvePublicAsset } from '@/lib/imageSrc';
 import { ImagePlaceholder } from './ImagePlaceholder';
 
 export function Hero() {
   const hero = portfolioImages.find((image) => image.id === 'hero') ?? portfolioImages[0];
+  const heroSrc = resolvePublicAsset(hero.src);
 
   return (
     <section className="hero" aria-labelledby="hero-title">
       <div className="hero-media">
-        {hero.src ? (
+        {heroSrc ? (
           <Image
-            src={hero.src}
+            src={heroSrc}
             alt={hero.alt}
             fill
             preload
