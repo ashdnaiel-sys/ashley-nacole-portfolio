@@ -13,6 +13,9 @@ export const metadata: Metadata = {
   },
 };
 
+const compCardUrl =
+  'https://github.com/ashdnaiel-sys/ashley-nacole-portfolio/blob/main/ashley-nacole-model-portfolio/public/images/comp-card/ashley-nacole-comp-card.svg';
+
 export default function DigitalsPage() {
   return (
     <div className="page-shell digitals-page">
@@ -62,11 +65,12 @@ export default function DigitalsPage() {
           </div>
           <a
             className="button-text"
-            href="/images/comp-card/ashley-nacole-comp-card.svg"
-            download="Ashley-Nacole-Comp-Card.svg"
-            aria-label="Download Ashley Nacole comp card"
+            href={compCardUrl}
+            target="_blank"
+            rel="noreferrer"
+            aria-label="View or download Ashley Nacole comp card"
           >
-            Download Comp Card ↓
+            View / Download Comp Card ↗
           </a>
         </div>
       </section>
