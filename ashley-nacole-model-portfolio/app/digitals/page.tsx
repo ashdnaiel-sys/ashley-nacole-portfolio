@@ -62,10 +62,10 @@ export default function DigitalsPage() {
           </div>
           <a
             className="button-text"
-            href="/images/comp-card/ashley-nacole-comp-card.jpg"
+            href="/comp-card"
             target="_blank"
             rel="noreferrer"
-            aria-label="Open Ashley Nacole comp card"
+            aria-label="Open Ashley Nacole high-resolution comp card"
           >
             Open / Save Comp Card ↗
           </a>
