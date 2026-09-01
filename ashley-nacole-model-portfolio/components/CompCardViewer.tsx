@@ -1,4 +1,5 @@
-const COMP_CARD = '/images/comp-card/ashley-nacole-comp-card.jpg';
+const COMP_CARD_VIEW = 'https://www.canva.com/design/DAHT-hyw8rs/view?embed';
+const COMP_CARD_OPEN = 'https://www.canva.com/d/hnaFOGiDE9qzRYY';
 
 export function CompCardViewer() {
   return (
@@ -30,32 +31,40 @@ export function CompCardViewer() {
           ← Digitals
         </a>
         <a
-          href={COMP_CARD}
-          download="Ashley-Nacole-Comp-Card.jpg"
+          href={COMP_CARD_OPEN}
+          target="_blank"
+          rel="noreferrer"
           style={{ borderBottom: '1px solid currentColor', paddingBottom: '3px' }}
         >
-          Save High-Resolution JPG ↓
+          Open Full-Resolution Comp Card ↗
         </a>
       </div>
 
-      <a href={COMP_CARD} target="_blank" rel="noreferrer" style={{ width: 'min(100%, 760px)' }}>
-        <img
-          src={COMP_CARD}
-          alt="Ashley Nacole high-resolution model comp card"
-          width={1137}
-          height={1473}
+      <div
+        style={{
+          width: 'min(100%, 760px)',
+          aspectRatio: '1137 / 1473',
+          background: '#fff',
+          boxShadow: '0 8px 28px rgba(0,0,0,.14)',
+          overflow: 'hidden',
+        }}
+      >
+        <iframe
+          src={COMP_CARD_VIEW}
+          title="Ashley Nacole high-resolution model comp card"
+          allowFullScreen
           style={{
             display: 'block',
             width: '100%',
-            height: 'auto',
+            height: '100%',
+            border: 0,
             background: '#fff',
-            boxShadow: '0 8px 28px rgba(0,0,0,.14)',
           }}
         />
-      </a>
+      </div>
 
       <p style={{ width: 'min(100%, 760px)', margin: 0, color: '#555', fontSize: '12px', textAlign: 'center' }}>
-        Tap the card to open it full size. On iPhone, you can also press and hold the image to save it to Photos.
+        This is the current Ashley Nacole comp card. Use “Open Full-Resolution Comp Card” above for the full-size version.
       </p>
     </main>
   );
