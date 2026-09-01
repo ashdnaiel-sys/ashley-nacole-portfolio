@@ -1,0 +1,40 @@
+name: Replace comp card with supplied high-resolution image
+
+on:
+  push:
+    paths:
+      - '.github/workflows/replace-comp-card.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  replace-comp-card:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Download Ashley's supplied high-resolution comp card
+        shell: bash
+        run: |
+          set -euo pipefail
+          TARGET='ashley-nacole-model-portfolio/public/images/comp-card/ashley-nacole-comp-card.jpg'
+          URL='https://media.canva.com/v2/image-resize/format:JPG/height:1473/quality:100/uri:ifs%3A%2F%2FM%2F9fd6e1be-93bd-41c0-8533-1292ec797950/watermark:F/width:1137?csig=AAAAAAAAAAAAAAAAAAAAAJDQHeDupEDg18033UbyXg8qphr9jvtuTIqfIisReFVr&exp=1788249300&osig=AAAAAAAAAAAAAAAAAAAAAP9jm1uexM76WUu_F3jnmn8bzTzpOkaDizfNzp8bdr0x&signer=media-rpc'
+          curl --fail --location --retry 3 --output "$TARGET" "$URL"
+          file "$TARGET"
+          test "$(wc -c < "$TARGET")" -gt 50000
+
+      - name: Commit exact high-resolution asset
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'ashdnaiel-sys'
+          git config user.email 'ashdnaiel@gmail.com'
+          git add ashley-nacole-model-portfolio/public/images/comp-card/ashley-nacole-comp-card.jpg
+          if git diff --cached --quiet; then
+            echo 'Comp card already matches.'
+            exit 0
+          fi
+          git commit -m 'Replace comp card with supplied high-resolution file'
+          git push
