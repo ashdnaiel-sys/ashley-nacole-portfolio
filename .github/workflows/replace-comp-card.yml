@@ -1,4 +1,4 @@
-name: Replace comp card with supplied high-resolution image
+name: Build high-resolution Ashley comp card
 
 on:
   push:
@@ -9,23 +9,111 @@ permissions:
   contents: write
 
 jobs:
-  replace-comp-card:
+  build-comp-card:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Download Ashley's supplied high-resolution comp card
+      - name: Install Pillow
+        run: python -m pip install --quiet pillow
+
+      - name: Build the final 1137 x 1473 comp card from the original portfolio photographs
         shell: bash
         run: |
-          set -euo pipefail
-          TARGET='ashley-nacole-model-portfolio/public/images/comp-card/ashley-nacole-comp-card.jpg'
-          URL='https://media.canva.com/v2/image-resize/format:JPG/height:1473/quality:100/uri:ifs%3A%2F%2FM%2F9fd6e1be-93bd-41c0-8533-1292ec797950/watermark:F/width:1137?csig=AAAAAAAAAAAAAAAAAAAAAJDQHeDupEDg18033UbyXg8qphr9jvtuTIqfIisReFVr&exp=1788249300&osig=AAAAAAAAAAAAAAAAAAAAAP9jm1uexM76WUu_F3jnmn8bzTzpOkaDizfNzp8bdr0x&signer=media-rpc'
-          curl --fail --location --retry 3 --output "$TARGET" "$URL"
-          file "$TARGET"
-          test "$(wc -c < "$TARGET")" -gt 50000
+          python - <<'PY'
+          from PIL import Image, ImageDraw, ImageFont
+          from pathlib import Path
 
-      - name: Commit exact high-resolution asset
+          root = Path('ashley-nacole-model-portfolio/public/images')
+          portfolio = root / 'portfolio'
+          target = root / 'comp-card' / 'ashley-nacole-comp-card.jpg'
+
+          WIDTH, HEIGHT = 1137, 1473
+          canvas = Image.new('RGB', (WIDTH, HEIGHT), 'white')
+
+          margin = 88
+          gap = 22
+          col = (WIDTH - margin * 2 - gap) // 2
+          top = 58
+          row = 516
+          second = top + row + 20
+
+          sources = [
+              ('lifestyle-denim-back-close.jpeg', 0.50, 0.43, margin, top),
+              ('lifestyle-denim-jacket-smile.jpeg', 0.50, 0.47, margin + col + gap, top),
+              ('lifestyle-denim-seated-full.jpeg', 0.50, 0.50, margin, second),
+              ('lifestyle-denim-stool-soft-smile.jpeg', 0.50, 0.45, margin + col + gap, second),
+          ]
+
+          def cover_crop(image, width, height, fx=.5, fy=.5):
+              sw, sh = image.size
+              source_ratio = sw / sh
+              target_ratio = width / height
+              if source_ratio > target_ratio:
+                  crop_h = sh
+                  crop_w = crop_h * target_ratio
+                  left = max(0, min(sw - crop_w, sw * fx - crop_w / 2))
+                  upper = 0
+              else:
+                  crop_w = sw
+                  crop_h = crop_w / target_ratio
+                  left = 0
+                  upper = max(0, min(sh - crop_h, sh * fy - crop_h / 2))
+              box = (round(left), round(upper), round(left + crop_w), round(upper + crop_h))
+              return image.crop(box).resize((width, height), Image.Resampling.LANCZOS)
+
+          for filename, fx, fy, x, y in sources:
+              with Image.open(portfolio / filename).convert('RGB') as source:
+                  canvas.paste(cover_crop(source, col, row, fx, fy), (x, y))
+
+          draw = ImageDraw.Draw(canvas)
+          try:
+              regular38 = ImageFont.truetype('/usr/share/fonts/truetype/liberation2/LiberationSans-Regular.ttf', 38)
+              regular23 = ImageFont.truetype('/usr/share/fonts/truetype/liberation2/LiberationSans-Regular.ttf', 23)
+              regular22 = ImageFont.truetype('/usr/share/fonts/truetype/liberation2/LiberationSans-Regular.ttf', 22)
+          except OSError:
+              regular38 = ImageFont.truetype('DejaVuSans.ttf', 38)
+              regular23 = ImageFont.truetype('DejaVuSans.ttf', 23)
+              regular22 = ImageFont.truetype('DejaVuSans.ttf', 22)
+
+          ink = '#111111'
+          text_y = second + row + 39
+          draw.text((margin, text_y), 'ASHLEY NACOLE / MODEL', font=regular38, fill=ink, anchor='la')
+
+          line = 33
+          left_label = margin
+          left_value = margin + 104
+          right_label = margin + 390
+          right_value = right_label + 108
+          base = text_y + 44
+
+          left = [('HEIGHT', "5’8"), ('BUST', '32.5”'), ('WAIST', '25.5”'), ('HIPS', '37”')]
+          right = [('SHOES', '9'), ('HAIR', 'BROWN'), ('EYES', 'BROWN')]
+
+          for i, (label, value) in enumerate(left):
+              y = base + i * line
+              draw.text((left_label, y), label, font=regular23, fill=ink, anchor='la')
+              draw.text((left_value, y), value, font=regular23, fill=ink, anchor='la')
+          for i, (label, value) in enumerate(right):
+              y = base + i * line
+              draw.text((right_label, y), label, font=regular23, fill=ink, anchor='la')
+              draw.text((right_value, y), value, font=regular23, fill=ink, anchor='la')
+
+          rule_y = 1390
+          draw.line((margin, rule_y, WIDTH - margin, rule_y), fill=ink, width=2)
+          footer_y = rule_y + 15
+          draw.text((margin, footer_y), 'NEAL HAMIL AGENCY', font=regular22, fill=ink, anchor='la')
+          draw.text((WIDTH - margin, footer_y), 'ASHLEYNACOLE011@GMAIL.COM', font=regular22, fill=ink, anchor='ra')
+
+          target.parent.mkdir(parents=True, exist_ok=True)
+          canvas.save(target, 'JPEG', quality=96, subsampling=0, optimize=True, progressive=True)
+          print(target, canvas.size, target.stat().st_size)
+          assert canvas.size == (1137, 1473)
+          assert target.stat().st_size > 100000
+          PY
+
+      - name: Commit the high-resolution static comp card
         shell: bash
         run: |
           set -euo pipefail
@@ -36,5 +124,5 @@ jobs:
             echo 'Comp card already matches.'
             exit 0
           fi
-          git commit -m 'Replace comp card with supplied high-resolution file'
+          git commit -m 'Replace comp card with high-resolution static card'
           git push
