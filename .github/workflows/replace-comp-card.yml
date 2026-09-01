@@ -1,4 +1,4 @@
-name: Build high-resolution Ashley comp card
+name: Finalize high-resolution Ashley comp card
 
 on:
   push:
@@ -9,7 +9,7 @@ permissions:
   contents: write
 
 jobs:
-  build-comp-card:
+  finalize-comp-card:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
@@ -18,7 +18,7 @@ jobs:
       - name: Install Pillow
         run: python -m pip install --quiet pillow
 
-      - name: Build the final 1137 x 1473 comp card from the original portfolio photographs
+      - name: Build the final 1137 x 1473 static comp card
         shell: bash
         run: |
           python - <<'PY'
@@ -31,12 +31,8 @@ jobs:
 
           WIDTH, HEIGHT = 1137, 1473
           canvas = Image.new('RGB', (WIDTH, HEIGHT), 'white')
-
-          margin = 88
-          gap = 22
+          margin, gap, top, row = 88, 22, 58, 516
           col = (WIDTH - margin * 2 - gap) // 2
-          top = 58
-          row = 516
           second = top + row + 20
 
           sources = [
@@ -68,29 +64,20 @@ jobs:
                   canvas.paste(cover_crop(source, col, row, fx, fy), (x, y))
 
           draw = ImageDraw.Draw(canvas)
-          try:
-              regular38 = ImageFont.truetype('/usr/share/fonts/truetype/liberation2/LiberationSans-Regular.ttf', 38)
-              regular23 = ImageFont.truetype('/usr/share/fonts/truetype/liberation2/LiberationSans-Regular.ttf', 23)
-              regular22 = ImageFont.truetype('/usr/share/fonts/truetype/liberation2/LiberationSans-Regular.ttf', 22)
-          except OSError:
-              regular38 = ImageFont.truetype('DejaVuSans.ttf', 38)
-              regular23 = ImageFont.truetype('DejaVuSans.ttf', 23)
-              regular22 = ImageFont.truetype('DejaVuSans.ttf', 22)
-
+          font_path = '/usr/share/fonts/truetype/liberation2/LiberationSans-Regular.ttf'
+          regular38 = ImageFont.truetype(font_path, 38)
+          regular23 = ImageFont.truetype(font_path, 23)
+          regular22 = ImageFont.truetype(font_path, 22)
           ink = '#111111'
+
           text_y = second + row + 39
           draw.text((margin, text_y), 'ASHLEY NACOLE / MODEL', font=regular38, fill=ink, anchor='la')
-
           line = 33
-          left_label = margin
-          left_value = margin + 104
-          right_label = margin + 390
-          right_value = right_label + 108
+          left_label, left_value = margin, margin + 104
+          right_label, right_value = margin + 390, margin + 498
           base = text_y + 44
-
           left = [('HEIGHT', "5’8"), ('BUST', '32.5”'), ('WAIST', '25.5”'), ('HIPS', '37”')]
           right = [('SHOES', '9'), ('HAIR', 'BROWN'), ('EYES', 'BROWN')]
-
           for i, (label, value) in enumerate(left):
               y = base + i * line
               draw.text((left_label, y), label, font=regular23, fill=ink, anchor='la')
@@ -108,21 +95,113 @@ jobs:
 
           target.parent.mkdir(parents=True, exist_ok=True)
           canvas.save(target, 'JPEG', quality=96, subsampling=0, optimize=True, progressive=True)
-          print(target, canvas.size, target.stat().st_size)
           assert canvas.size == (1137, 1473)
           assert target.stat().st_size > 100000
+          print(target, canvas.size, target.stat().st_size)
           PY
 
-      - name: Commit the high-resolution static comp card
+      - name: Make the website use the static comp card directly
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          preview = Path('ashley-nacole-model-portfolio/preview.html')
+          text = preview.read_text()
+          old = '<a class="comp-card-link" href="/?compcard=1" aria-label="Open Ashley Nacole high-resolution comp card">Open / Save Comp Card ↗</a>'
+          new = '<a class="comp-card-link" href="public/images/comp-card/ashley-nacole-comp-card.jpg" target="_blank" rel="noreferrer" aria-label="Open Ashley Nacole high-resolution comp card">Open / Save Comp Card ↗</a>'
+          if old not in text:
+              raise SystemExit('Expected comp-card link was not found in preview.html')
+          text = text.replace(old, new, 1)
+
+          script_start = text.find('  <script>\n    (async function () {')
+          if script_start != -1:
+              script_end = text.find('  </script>', script_start)
+              if script_end == -1:
+                  raise SystemExit('Comp-card script start found without closing script tag')
+              text = text[:script_start] + text[script_end + len('  </script>'):]
+
+          preview.write_text(text)
+          PY
+
+          cat > ashley-nacole-model-portfolio/components/CompCardViewer.tsx <<'TSX'
+          const COMP_CARD = '/images/comp-card/ashley-nacole-comp-card.jpg';
+
+          export function CompCardViewer() {
+            return (
+              <main
+                style={{
+                  minHeight: '100svh',
+                  background: '#efefef',
+                  padding: '18px 14px 40px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  gap: '14px',
+                }}
+              >
+                <div
+                  style={{
+                    width: 'min(100%, 760px)',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    gap: '14px',
+                    flexWrap: 'wrap',
+                    fontSize: '11px',
+                    textTransform: 'uppercase',
+                    letterSpacing: '.1em',
+                  }}
+                >
+                  <a href="/digitals" style={{ borderBottom: '1px solid currentColor', paddingBottom: '3px' }}>
+                    ← Digitals
+                  </a>
+                  <a
+                    href={COMP_CARD}
+                    download="Ashley-Nacole-Comp-Card.jpg"
+                    style={{ borderBottom: '1px solid currentColor', paddingBottom: '3px' }}
+                  >
+                    Save High-Resolution JPG ↓
+                  </a>
+                </div>
+
+                <a href={COMP_CARD} target="_blank" rel="noreferrer" style={{ width: 'min(100%, 760px)' }}>
+                  <img
+                    src={COMP_CARD}
+                    alt="Ashley Nacole high-resolution model comp card"
+                    width={1137}
+                    height={1473}
+                    style={{
+                      display: 'block',
+                      width: '100%',
+                      height: 'auto',
+                      background: '#fff',
+                      boxShadow: '0 8px 28px rgba(0,0,0,.14)',
+                    }}
+                  />
+                </a>
+
+                <p style={{ width: 'min(100%, 760px)', margin: 0, color: '#555', fontSize: '12px', textAlign: 'center' }}>
+                  Tap the card to open it full size. On iPhone, you can also press and hold the image to save it to Photos.
+                </p>
+              </main>
+            );
+          }
+          TSX
+
+      - name: Commit final static comp card implementation
         shell: bash
         run: |
           set -euo pipefail
           git config user.name 'ashdnaiel-sys'
           git config user.email 'ashdnaiel@gmail.com'
-          git add ashley-nacole-model-portfolio/public/images/comp-card/ashley-nacole-comp-card.jpg
+          git add \
+            ashley-nacole-model-portfolio/public/images/comp-card/ashley-nacole-comp-card.jpg \
+            ashley-nacole-model-portfolio/preview.html \
+            ashley-nacole-model-portfolio/components/CompCardViewer.tsx
           if git diff --cached --quiet; then
-            echo 'Comp card already matches.'
+            echo 'Static comp card implementation already matches.'
             exit 0
           fi
-          git commit -m 'Replace comp card with high-resolution static card'
+          git commit -m 'Use static high-resolution comp card everywhere'
           git push
