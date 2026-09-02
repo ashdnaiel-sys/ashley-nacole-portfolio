@@ -1,5 +1,4 @@
-const COMP_CARD_VIEW = 'https://www.canva.com/design/DAHT-hyw8rs/view?embed';
-const COMP_CARD_OPEN = 'https://www.canva.com/d/hnaFOGiDE9qzRYY';
+const COMP_CARD_IMAGE = '/images/comp-card/ashley-nacole-comp-card.jpg';
 
 export function CompCardViewer() {
   return (
@@ -31,7 +30,7 @@ export function CompCardViewer() {
           ← Digitals
         </a>
         <a
-          href={COMP_CARD_OPEN}
+          href={COMP_CARD_IMAGE}
           target="_blank"
           rel="noreferrer"
           style={{ borderBottom: '1px solid currentColor', paddingBottom: '3px' }}
@@ -40,31 +39,29 @@ export function CompCardViewer() {
         </a>
       </div>
 
-      <div
+      <a
+        href={COMP_CARD_IMAGE}
+        target="_blank"
+        rel="noreferrer"
+        aria-label="Open Ashley Nacole full-resolution model comp card"
         style={{
+          display: 'block',
           width: 'min(100%, 760px)',
-          aspectRatio: '1137 / 1473',
           background: '#fff',
           boxShadow: '0 8px 28px rgba(0,0,0,.14)',
-          overflow: 'hidden',
         }}
       >
-        <iframe
-          src={COMP_CARD_VIEW}
-          title="Ashley Nacole high-resolution model comp card"
-          allowFullScreen
-          style={{
-            display: 'block',
-            width: '100%',
-            height: '100%',
-            border: 0,
-            background: '#fff',
-          }}
+        <img
+          src={COMP_CARD_IMAGE}
+          alt="Ashley Nacole model comp card"
+          width={1137}
+          height={1473}
+          style={{ display: 'block', width: '100%', height: 'auto' }}
         />
-      </div>
+      </a>
 
       <p style={{ width: 'min(100%, 760px)', margin: 0, color: '#555', fontSize: '12px', textAlign: 'center' }}>
-        This is the current Ashley Nacole comp card. Use “Open Full-Resolution Comp Card” above for the full-size version.
+        This is the current Ashley Nacole comp card. Tap the card or “Open Full-Resolution Comp Card” above to open the original image at full size.
       </p>
     </main>
   );
